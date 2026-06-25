@@ -118,9 +118,9 @@ nav .links a:hover{color:var(--text)}
 .phone-mockup .screen{
   width:100%;height:100%;
   border-radius:26px;
-  background:linear-gradient(180deg,#1a1410 0%,#0D0A07 100%);
+  background-color:#1a1410;
+  background-size:cover;background-position:center;
   overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
   position:relative;
 }
 .phone-mockup .screen .app-icon-small{
@@ -252,7 +252,7 @@ footer .copy{font-size:11px;color:var(--muted);margin-top:12px}
   .cocktail-panel{height:500px;margin-bottom:0}
   .noise-card{flex:0 0 280px;height:400px}
   .shot-card{flex:0 0 240px}
-  .shot-img{width:240px;height:490px}
+  .shot-img{width:240px;height:490px;background-position:center 2%}
   .hero-glow{width:500px;height:500px}
 }
 @media(min-width:1024px){
@@ -289,11 +289,7 @@ footer .copy{font-size:11px;color:var(--muted);margin-top:12px}
   </div>
   <div class="phone-mockup">
     <div class="notch"></div>
-    <div class="screen">
-      <div class="app-icon-small">🍸</div>
-      <div class="app-title-small">喝 点</div>
-      <div class="app-sub-small">鸡尾酒指南</div>
-    </div>
+    <div class="screen" style="background-image:url(images/screenshot-splash.jpg);background-size:cover;background-position:center"></div>
   </div>
 </section>
 
@@ -305,7 +301,7 @@ footer .copy{font-size:11px;color:var(--muted);margin-top:12px}
       <h2>喝点不只是调酒</h2>
       <p>从寻找属于自己的那一杯，到在白噪音中结束一天。<br>喝点陪伴每一个夜晚。</p>
     </div>
-    <div class="brand-image" style="background-image:url(https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg)"></div>
+    <div class="brand-image" style="background-image:url(images/old_fashioned.jpg)"></div>
   </div>
 </section>
 
@@ -315,19 +311,19 @@ footer .copy{font-size:11px;color:var(--muted);margin-top:12px}
     <p class="section-label">鸡尾酒体验</p>
     <h2 style="margin-bottom:40px">找到属于你的那一杯</h2>
     <div class="cocktail-grid">
-      <div class="cocktail-panel" style="background-image:url(https://www.thecocktaildb.com/images/media/drink/wx7hsg1504370510.jpg)">
+      <div class="cocktail-panel" style="background-image:url(images/margarita.jpg)">
         <div class="info">
           <div class="name">玛格丽特</div>
           <div class="mood">适合夏夜与海风</div>
         </div>
       </div>
-      <div class="cocktail-panel" style="background-image:url(https://www.thecocktaildb.com/images/media/drink/qgdu971561574065.jpg)">
+      <div class="cocktail-panel" style="background-image:url(images/negroni.jpg)">
         <div class="info">
           <div class="name">内格罗尼</div>
           <div class="mood">适合深夜独饮</div>
         </div>
       </div>
-      <div class="cocktail-panel" style="background-image:url(https://www.thecocktaildb.com/images/media/drink/vsrupw1472405732.jpg)">
+      <div class="cocktail-panel" style="background-image:url(images/old_fashioned.jpg)">
         <div class="info">
           <div class="name">古典鸡尾酒</div>
           <div class="mood">适合第一次尝试鸡尾酒</div>
@@ -484,55 +480,81 @@ footer .copy{font-size:11px;color:var(--muted);margin-top:12px}
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-// ── Hero animation ──
-gsap.from('.hero .text-block > *',{
-  y:40,opacity:0,duration:1,stagger:.15,ease:'power3.out',delay:.3
-});
-gsap.from('.phone-mockup',{
-  y:60,opacity:0,duration:1.2,ease:'power3.out',delay:.6
-});
+// ── Hero ──
+var tl=gsap.timeline({defaults:{ease:'power3.out'}});
+tl.from('.hero h1',{y:60,opacity:0,duration:1.2},0)
+  .from('.hero .subtitle',{y:40,opacity:0,duration:1},0.2)
+  .from('.hero .btn-group',{y:30,opacity:0,duration:.8},0.4)
+  .from('.hero .version-info',{y:20,opacity:0,duration:.6},0.5)
+  .from('.phone-mockup',{y:80,opacity:0,scale:.9,duration:1.4,ease:'power2.out'},0.3);
 
-// ── Phone continuous float ──
-gsap.to('.phone-mockup',{
-  y:-12,duration:3,ease:'sine.inOut',yoyo:true,repeat:-1
-});
+// ── Phone float ──
+gsap.to('.phone-mockup',{y:-14,duration:3.5,ease:'sine.inOut',yoyo:true,repeat:-1});
 
-// ── Section reveal ──
-document.querySelectorAll('.section').forEach(function(el){
+// ── Sections fade in ──
+gsap.utils.toArray('.section').forEach(function(el){
   gsap.from(el,{
-    scrollTrigger:{trigger:el,start:'top 85%',toggleActions:'play none none none'},
-    y:40,opacity:0,duration:1,ease:'power3.out'
+    scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'},
+    y:50,opacity:0,duration:1.1,ease:'power3.out'
   });
 });
 
-// ── Cocktail panels stagger ──
-gsap.from('.cocktail-panel',{
-  scrollTrigger:{trigger:'.cocktail-grid',start:'top 80%'},
-  y:30,opacity:0,duration:.8,stagger:.2,ease:'power3.out'
+// ── Brand image parallax ──
+gsap.to('.brand-image',{
+  scrollTrigger:{trigger:'.brand-content',start:'top bottom',end:'bottom top',scrub:1},
+  y:-40,ease:'none'
 });
 
-// ── Noise cards reveal ──
+// ── Cocktail panels + parallax ──
+gsap.from('.cocktail-panel',{
+  scrollTrigger:{trigger:'.cocktail-grid',start:'top 78%'},
+  y:40,opacity:0,duration:.9,stagger:.2,ease:'power3.out'
+});
+document.querySelectorAll('.cocktail-panel').forEach(function(el){
+  gsap.to(el,{
+    scrollTrigger:{trigger:el,start:'top bottom',end:'bottom top',scrub:1.5},
+    backgroundPosition:'center 60%',ease:'none'
+  });
+});
+
+// ── Noise cards ──
 gsap.from('.noise-card',{
-  scrollTrigger:{trigger:'.noise-scroll',start:'top 80%'},
-  x:40,opacity:0,duration:.7,stagger:.1,ease:'power3.out'
+  scrollTrigger:{trigger:'.noise-scroll',start:'top 82%'},
+  x:50,opacity:0,duration:.7,stagger:.12,ease:'power3.out'
+});
+
+// ── Shot cards ──
+gsap.from('.shot-card',{
+  scrollTrigger:{trigger:'.shot-scroll',start:'top 85%'},
+  y:40,scale:.92,opacity:0,duration:.7,stagger:.12,ease:'power3.out'
+});
+
+// ── Numbers counter ──
+document.querySelectorAll('.st-num').forEach(function(el){
+  var v=parseInt(el.textContent)||0;
+  gsap.from(el,{
+    scrollTrigger:{trigger:el,start:'top 90%'},
+    textContent:0,duration:1.8,roundProps:'textContent',
+    ease:'power2.out',snap:{textContent:1}
+  });
 });
 
 // ── Timeline items ──
 gsap.from('.timeline-item',{
-  scrollTrigger:{trigger:'.timeline',start:'top 80%'},
-  x:-20,opacity:0,duration:.6,stagger:.15,ease:'power3.out'
+  scrollTrigger:{trigger:'.timeline',start:'top 82%'},
+  x:-30,opacity:0,duration:.7,stagger:.18,ease:'power3.out'
 });
 
-// ── Screenshots ──
-gsap.from('.shot',{
-  scrollTrigger:{trigger:'.screenshots-frame',start:'top 85%'},
-  scale:.9,opacity:0,duration:.7,stagger:.15,ease:'power3.out'
+// ── Features 3col ──
+gsap.from('.features-3col > div',{
+  scrollTrigger:{trigger:'.features-3col',start:'top 85%'},
+  y:30,opacity:0,duration:.7,stagger:.15,ease:'power3.out'
 });
 
-// ── Download section ──
+// ── Download ──
 gsap.from('.download-section > *',{
   scrollTrigger:{trigger:'.download-section',start:'top 80%'},
-  y:30,opacity:0,duration:.8,stagger:.12,ease:'power3.out'
+  y:40,opacity:0,duration:.9,stagger:.12,ease:'power3.out'
 });
 </script>
 </body>
