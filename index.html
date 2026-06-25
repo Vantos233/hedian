@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="喝点 - 鸡尾酒与白噪音的夜晚陪伴。Android 版已上线。">
+<meta property="og:title" content="喝点 · 鸡尾酒与白噪音">
+<meta property="og:description" content="夜深了，调一杯，听万物。">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍸</text></svg>">
+<title>喝点 · 鸡尾酒与白噪音</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --bg: #0A0A0A;
+  --card: #121212;
+  --gold: #D4AF73;
+  --gold-light: #F5E6C8;
+  --text: #FFFFFF;
+  --sub: rgba(255,255,255,0.65);
+  --muted: rgba(255,255,255,0.35);
+  --line: rgba(255,255,255,0.08);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{
+  font-family:'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  background:var(--bg);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+/* ── Typography ── */
+h1{font-size:clamp(32px,8vw,56px);font-weight:700;letter-spacing:-0.02em;line-height:1.15}
+h2{font-size:clamp(24px,5vw,40px);font-weight:500;letter-spacing:-0.01em;line-height:1.25}
+.section-label{font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:500}
+
+/* ── Nav ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 24px;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  background:rgba(10,10,10,.7);
+  border-bottom:1px solid var(--line);
+}
+nav .logo{font-size:18px;font-weight:700;color:var(--gold);letter-spacing:0.08em;text-decoration:none}
+nav .links{display:flex;gap:24px}
+nav .links a{color:var(--sub);text-decoration:none;font-size:13px;font-weight:400;transition:color .3s}
+nav .links a:hover{color:var(--text)}
+
+/* ── Buttons ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 32px;border-radius:100px;
+  font-size:15px;font-weight:500;letter-spacing:0.02em;
+  text-decoration:none;transition:all .35s;cursor:pointer;border:none;
+  font-family:inherit;
+}
+.btn-primary{background:var(--gold);color:var(--bg)}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-ghost{
+  background:transparent;color:var(--sub);
+  border:1px solid rgba(255,255,255,0.15);
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.35);color:var(--text)}
+.btn-group{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* ── Sections ── */
+.section{padding:100px 24px;position:relative}
+.section-inner{max-width:480px;margin:0 auto}
+
+/* ── Section 1: Hero ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;padding:120px 24px 80px;
+  position:relative;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(212,175,115,.06),transparent 70%);
+  pointer-events:none;
+}
+.hero h1{margin-bottom:12px}
+.hero .subtitle{font-size:17px;color:var(--sub);font-weight:300;letter-spacing:0.04em;margin-bottom:40px}
+.hero .btn-group{margin-bottom:24px}
+.hero .version-info{font-size:12px;color:var(--muted);letter-spacing:0.04em}
+
+/* Phone mockup */
+.phone-mockup{
+  margin-top:48px;position:relative;
+  width:220px;height:450px;
+  background:var(--card);
+  border-radius:36px;
+  border:2px solid rgba(255,255,255,0.1);
+  padding:12px;
+  box-shadow:0 40px 80px rgba(0,0,0,.5);
+}
+.phone-mockup .screen{
+  width:100%;height:100%;
+  border-radius:26px;
+  background:linear-gradient(180deg,#1a1410 0%,#0D0A07 100%);
+  overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;
+}
+.phone-mockup .screen .app-icon-small{
+  width:48px;height:48px;border-radius:12px;margin-bottom:12px;
+  background:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;
+}
+.phone-mockup .screen .app-title-small{font-size:18px;font-weight:700;color:var(--gold);letter-spacing:0.08em}
+.phone-mockup .screen .app-sub-small{font-size:11px;color:var(--muted);margin-top:4px}
+.phone-mockup .notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:80px;height:24px;background:var(--bg);border-radius:0 0 16px 16px;z-index:2}
+
+/* ── Section 2: Brand ── */
+.brand-section{background:var(--bg)}
+.brand-content{text-align:center}
+.brand-content h2{margin-bottom:24px}
+.brand-content p{font-size:16px;color:var(--sub);font-weight:300;line-height:1.85;max-width:420px;margin:0 auto}
+.brand-image{
+  margin-top:60px;width:100%;height:clamp(300px,50vw,500px);
+  background:var(--card);border-radius:16px;overflow:hidden;position:relative;
+  background-size:cover;background-position:center;
+}
+
+/* ── Section 3: Cocktails ── */
+.cocktail-panel{
+  position:relative;height:clamp(400px,60vw,600px);
+  display:flex;align-items:flex-end;padding:48px 32px;
+  background-size:cover;background-position:center 30%;
+  border-radius:16px;overflow:hidden;margin-bottom:20px;
+  transition:transform .4s;
+}
+.cocktail-panel::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(transparent 35%,rgba(10,10,10,.85));
+}
+.cocktail-panel .info{position:relative;z-index:1}
+.cocktail-panel .name{font-size:28px;font-weight:700;margin-bottom:6px}
+.cocktail-panel .mood{font-size:15px;color:var(--gold-light);font-weight:300;letter-spacing:0.04em}
+
+/* ── Section 4: White Noise ── */
+.noise-scroll{
+  display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding:20px 0 40px;margin:0 -24px;padding-left:24px;padding-right:24px;
+}
+.noise-scroll::-webkit-scrollbar{display:none}
+.noise-card{
+  flex:0 0 220px;scroll-snap-align:start;
+  border-radius:16px;overflow:hidden;position:relative;
+  height:340px;background:var(--card);
+}
+.noise-card .img{
+  width:100%;height:100%;background-size:cover;background-position:center;
+  position:absolute;inset:0;
+}
+.noise-card .label{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:32px 20px 20px;
+  background:linear-gradient(transparent,rgba(10,10,10,.9));
+  z-index:1;
+}
+.noise-card .label h3{font-size:18px;font-weight:500;margin-bottom:4px}
+.noise-card .label p{font-size:12px;color:var(--muted)}
+
+/* ── Section 5: App Screenshots ── */
+.screenshots-frame{
+  position:relative;display:flex;justify-content:center;gap:20px;
+  flex-wrap:wrap;margin-top:40px;
+}
+.shot{
+  width:180px;height:370px;border-radius:28px;
+  background:var(--card);border:1px solid var(--line);
+  overflow:hidden;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:13px;text-align:center;padding:20px;
+}
+
+/* ── Section 6: Roadmap ── */
+.timeline{max-width:400px;margin:0 auto}
+.timeline-item{
+  display:flex;align-items:flex-start;gap:16px;padding:20px 0;
+  border-bottom:1px solid var(--line);
+}
+.timeline-item:last-child{border:none}
+.timeline-item .dot{
+  flex-shrink:0;width:10px;height:10px;border-radius:50%;margin-top:6px;
+}
+.timeline-item .dot.done{background:var(--gold)}
+.timeline-item .dot.wip{background:var(--muted)}
+.timeline-item .content h4{font-size:16px;font-weight:500;margin-bottom:2px}
+.timeline-item .content .status{font-size:12px;color:var(--muted)}
+.timeline-item .content .status.done{color:var(--gold)}
+.future-list{margin-top:40px}
+.future-list h4{font-size:13px;color:var(--muted);letter-spacing:0.06em;margin-bottom:16px;text-transform:uppercase}
+.future-list ul{list-style:none}
+.future-list li{padding:8px 0;font-size:14px;color:var(--sub);font-weight:300}
+
+/* ── Section 7: Download ── */
+.download-section{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;
+}
+.download-section h2{font-size:36px;font-weight:700;margin-bottom:8px}
+.download-section .sub{font-size:17px;color:var(--sub);font-weight:300;margin-bottom:40px}
+.download-section .btn-group{margin-bottom:20px}
+.download-section .meta{font-size:12px;color:var(--muted);line-height:1.8}
+
+/* ── Footer ── */
+footer{text-align:center;padding:40px 24px;border-top:1px solid var(--line)}
+footer .name{font-size:14px;color:var(--gold);margin-bottom:4px}
+footer a{color:var(--sub);text-decoration:none;font-size:12px;transition:color .3s}
+footer a:hover{color:var(--gold)}
+footer .copy{font-size:11px;color:var(--muted);margin-top:12px}
+
+/* ── Desktop ── */
+@media(min-width:768px){
+  .section{padding:140px 40px}
+  .section-inner{max-width:640px}
+  .hero{flex-direction:row;text-align:left;gap:80px;padding:0 60px}
+  .hero .text-block{flex:1}
+  .phone-mockup{margin-top:0;flex-shrink:0}
+  .brand-content{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;text-align:left}
+  .brand-content p{max-width:none}
+  .brand-image{margin-top:0;height:100%;min-height:400px}
+  .cocktail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .cocktail-panel{height:500px;margin-bottom:0}
+  .noise-card{flex:0 0 280px;height:400px}
+  .shot{width:240px;height:490px}
+  .hero-glow{width:500px;height:500px}
+}
+@media(min-width:1024px){
+  .section-inner,.timeline{max-width:800px}
+  .hero h1{font-size:64px}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a href="#" class="logo">喝点</a>
+  <div class="links">
+    <a href="#cocktails">鸡尾酒</a>
+    <a href="#noise">白噪音</a>
+    <a href="#download">下载</a>
+  </div>
+</nav>
+
+<!-- ── Section 1: Hero ── -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="text-block">
+    <h1>夜深了，<br>调一杯，听万物</h1>
+    <p class="subtitle">鸡尾酒与白噪音的夜晚陪伴</p>
+    <div class="btn-group">
+      <a href="喝点_v1.0.0.apk" class="btn btn-primary">Android 下载</a>
+      <span class="btn btn-ghost">iOS 开发中</span>
+      <span class="btn btn-ghost">鸿蒙 开发中</span>
+    </div>
+    <p class="version-info">v1.0.0 · 125MB · Android 8.0+</p>
+  </div>
+  <div class="phone-mockup">
+    <div class="notch"></div>
+    <div class="screen">
+      <div class="app-icon-small">🍸</div>
+      <div class="app-title-small">喝 点</div>
+      <div class="app-sub-small">鸡尾酒指南</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section 2: 品牌理念 ── -->
+<section class="section" style="padding-bottom:0">
+  <div class="brand-content section-inner" style="max-width:900px">
+    <div>
+      <p class="section-label">品牌理念</p>
+      <h2>喝点不只是调酒</h2>
+      <p>从寻找属于自己的那一杯，到在白噪音中结束一天。<br>喝点陪伴每一个夜晚。</p>
+    </div>
+    <div class="brand-image" style="background-image:url(https://www.thecocktaildb.com/images/media/drink/vrwquq1478252802.jpg)"></div>
+  </div>
+</section>
+
+<!-- ── Section 3: 鸡尾酒体验 ── -->
+<section class="section" id="cocktails">
+  <div class="section-inner" style="max-width:900px">
+    <p class="section-label">鸡尾酒体验</p>
+    <h2 style="margin-bottom:40px">找到属于你的那一杯</h2>
+    <div class="cocktail-grid">
+      <div class="cocktail-panel" style="background-image:url(https://www.thecocktaildb.com/images/media/drink/wx7hsg1504370510.jpg)">
+        <div class="info">
+          <div class="name">玛格丽特</div>
+          <div class="mood">适合夏夜与海风</div>
+        </div>
+      </div>
+      <div class="cocktail-panel" style="background-image:url(https://www.thecocktaildb.com/images/media/drink/qgdu971561574065.jpg)">
+        <div class="info">
+          <div class="name">内格罗尼</div>
+          <div class="mood">适合深夜独饮</div>
+        </div>
+      </div>
+      <div class="cocktail-panel" style="background-image:url(https://www.thecocktaildb.com/images/media/drink/vsrupw1472405732.jpg)">
+        <div class="info">
+          <div class="name">古典鸡尾酒</div>
+          <div class="mood">适合第一次尝试鸡尾酒</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section 4: 白噪音体验 ── -->
+<section class="section" id="noise" style="overflow:hidden">
+  <div class="section-inner" style="max-width:900px">
+    <p class="section-label">白噪音体验</p>
+    <h2>让夜晚安静下来</h2>
+  </div>
+  <div class="noise-scroll" style="max-width:900px;margin-left:auto;margin-right:auto;padding-left:0">
+    <div class="noise-card">
+      <div class="img" style="background-image:url(https://images.unsplash.com/photo-1529156069898-489d0f7e0fe0?w=600&q=80)"></div>
+      <div class="label"><h3>雷雨</h3><p>窗外雨声，室内温暖</p></div>
+    </div>
+    <div class="noise-card">
+      <div class="img" style="background-image:url(https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80)"></div>
+      <div class="label"><h3>海浪</h3><p>潮汐起落，心事放空</p></div>
+    </div>
+    <div class="noise-card">
+      <div class="img" style="background-image:url(https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=600&q=80)"></div>
+      <div class="label"><h3>篝火</h3><p>噼啪作响，宁静温暖</p></div>
+    </div>
+    <div class="noise-card">
+      <div class="img" style="background-image:url(https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80)"></div>
+      <div class="label"><h3>森林鸟鸣</h3><p>清晨林间，生机盎然</p></div>
+    </div>
+    <div class="noise-card">
+      <div class="img" style="background-image:url(https://images.unsplash.com/photo-1518837695005-2083093bcbf2?w=600&q=80)"></div>
+      <div class="label"><h3>溪流</h3><p>流水潺潺，心随水去</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section 5: App 展示 ── -->
+<section class="section">
+  <div class="section-inner" style="max-width:900px;text-align:center">
+    <p class="section-label">App 预览</p>
+    <h2 style="margin-bottom:16px">一切都在指尖</h2>
+    <p style="font-size:15px;color:var(--sub);font-weight:300">以下是 App 实际截图。<br class="mobile-only">截图将在下一版本中更新。</p>
+    <div class="screenshots-frame">
+      <div class="shot">首页<br><span style="font-size:11px;margin-top:4px;display:block">截图待补充</span></div>
+      <div class="shot">调酒页<br><span style="font-size:11px;margin-top:4px;display:block">截图待补充</span></div>
+      <div class="shot">白噪音<br><span style="font-size:11px;margin-top:4px;display:block">截图待补充</span></div>
+      <div class="shot">我的<br><span style="font-size:11px;margin-top:4px;display:block">截图待补充</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section 6: 开发路线图 ── -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-label">开发路线图</p>
+    <h2 style="margin-bottom:40px">持续更新中</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="dot done"></div>
+        <div class="content">
+          <h4>Android</h4>
+          <span class="status done">✓ 已上线</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="dot wip"></div>
+        <div class="content">
+          <h4>iOS</h4>
+          <span class="status">开发中</span>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="dot wip"></div>
+        <div class="content">
+          <h4>HarmonyOS</h4>
+          <span class="status">开发中</span>
+        </div>
+      </div>
+    </div>
+    <div class="future-list">
+      <h4>未来计划</h4>
+      <ul>
+        <li>更多鸡尾酒内容</li>
+        <li>更多白噪音场景</li>
+        <li>账号同步功能</li>
+        <li>个性化推荐</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section 7: 下载区域 ── -->
+<section class="download-section section" id="download">
+  <h2>喝点<br>今晚喝什么？</h2>
+  <p class="sub">让我们帮你找到答案</p>
+  <div class="btn-group">
+    <a href="喝点_v1.0.0.apk" class="btn btn-primary">Android 下载</a>
+    <span class="btn btn-ghost">iOS 开发中</span>
+    <span class="btn btn-ghost">鸿蒙 开发中</span>
+  </div>
+  <div class="meta">
+    v1.0.0 · 2025.06 · 125MB<br>
+    方土先生 / Vantos
+  </div>
+</section>
+
+<footer>
+  <p class="name">方土先生 / Vantos</p>
+  <a href="mailto:3201915643@qq.com">3201915643@qq.com</a>
+  <p class="copy">© 2025 喝点 · 慢下来，喝一杯</p>
+</footer>
+
+<!-- GSAP -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ── Hero animation ──
+gsap.from('.hero .text-block > *',{
+  y:40,opacity:0,duration:1,stagger:.15,ease:'power3.out',delay:.3
+});
+gsap.from('.phone-mockup',{
+  y:60,opacity:0,duration:1.2,ease:'power3.out',delay:.6
+});
+
+// ── Phone continuous float ──
+gsap.to('.phone-mockup',{
+  y:-12,duration:3,ease:'sine.inOut',yoyo:true,repeat:-1
+});
+
+// ── Section reveal ──
+document.querySelectorAll('.section').forEach(function(el){
+  gsap.from(el,{
+    scrollTrigger:{trigger:el,start:'top 85%',toggleActions:'play none none none'},
+    y:40,opacity:0,duration:1,ease:'power3.out'
+  });
+});
+
+// ── Cocktail panels stagger ──
+gsap.from('.cocktail-panel',{
+  scrollTrigger:{trigger:'.cocktail-grid',start:'top 80%'},
+  y:30,opacity:0,duration:.8,stagger:.2,ease:'power3.out'
+});
+
+// ── Noise cards reveal ──
+gsap.from('.noise-card',{
+  scrollTrigger:{trigger:'.noise-scroll',start:'top 80%'},
+  x:40,opacity:0,duration:.7,stagger:.1,ease:'power3.out'
+});
+
+// ── Timeline items ──
+gsap.from('.timeline-item',{
+  scrollTrigger:{trigger:'.timeline',start:'top 80%'},
+  x:-20,opacity:0,duration:.6,stagger:.15,ease:'power3.out'
+});
+
+// ── Screenshots ──
+gsap.from('.shot',{
+  scrollTrigger:{trigger:'.screenshots-frame',start:'top 85%'},
+  scale:.9,opacity:0,duration:.7,stagger:.15,ease:'power3.out'
+});
+
+// ── Download section ──
+gsap.from('.download-section > *',{
+  scrollTrigger:{trigger:'.download-section',start:'top 80%'},
+  y:30,opacity:0,duration:.8,stagger:.12,ease:'power3.out'
+});
+</script>
+</body>
+</html>
