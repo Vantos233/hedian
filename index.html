@@ -33,6 +33,12 @@ body{
   line-height:1.6;
   overflow-x:hidden;
 }
+body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(212,175,115,.04),transparent),radial-gradient(ellipse 60% 50% at 80% 80%,rgba(200,146,42,.03),transparent)}body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
 
 /* ── Typography ── */
 h1{font-size:clamp(32px,8vw,56px);font-weight:700;letter-spacing:-0.02em;line-height:1.15}
@@ -86,6 +92,14 @@ nav .links a:hover{color:var(--text)}
   background:radial-gradient(circle,rgba(212,175,115,.06),transparent 70%);
   pointer-events:none;
 }
+
+/* ── Floating orbs ── */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px)}
+.orb-1{top:20%;left:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(212,175,115,.08),transparent 70%);animation:orbFloat 12s ease-in-out infinite}
+.orb-2{top:60%;right:-15%;width:400px;height:400px;background:radial-gradient(circle,rgba(200,146,42,.07),transparent 70%);animation:orbFloat 15s 3s ease-in-out infinite}
+.orb-3{bottom:-10%;left:30%;width:350px;height:350px;background:radial-gradient(circle,rgba(245,230,200,.06),transparent 70%);animation:orbFloat 18s 7s ease-in-out infinite}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1);opacity:.6}33%{transform:translate(30px,-20px) scale(1.1);opacity:1}66%{transform:translate(-20px,10px) scale(.95);opacity:.7}}
+
 .hero h1{margin-bottom:12px}
 .hero .subtitle{font-size:17px;color:var(--sub);font-weight:300;letter-spacing:0.04em;margin-bottom:40px}
 .hero .btn-group{margin-bottom:24px}
@@ -150,9 +164,9 @@ nav .links a:hover{color:var(--text)}
 .noise-scroll{
   display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
   -webkit-overflow-scrolling:touch;
-  padding:20px 0 40px;margin:0 -24px;padding-left:24px;padding-right:24px;
+  padding:20px 24px 20px 24px;scroll-padding:0 24px;
 }
-.noise-scroll::-webkit-scrollbar{display:none}
+.noise-scroll::-webkit-scrollbar{height:3px}.noise-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:2px}.noise-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
 .noise-card{
   flex:0 0 220px;scroll-snap-align:start;
   border-radius:16px;overflow:hidden;position:relative;
@@ -172,17 +186,16 @@ nav .links a:hover{color:var(--text)}
 .noise-card .label p{font-size:12px;color:var(--muted)}
 
 /* ── Section 5: App Screenshots ── */
-.screenshots-frame{
-  position:relative;display:flex;justify-content:center;gap:20px;
-  flex-wrap:wrap;margin-top:40px;
+.shot-scroll{
+  display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;padding:0 24px 20px;margin:0 -24px;
 }
-.shot{
-  width:180px;height:370px;border-radius:28px;
-  background:var(--card);border:1px solid var(--line);
-  overflow:hidden;position:relative;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--muted);font-size:13px;text-align:center;padding:20px;
-}
+.shot-scroll::-webkit-scrollbar{height:3px}
+.shot-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:2px}
+.shot-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
+.shot-card{flex:0 0 200px;scroll-snap-align:start;text-align:center}
+.shot-img{width:200px;height:410px;border-radius:24px;background-size:cover;background-position:top;background-color:var(--card);border:1px solid var(--line);margin-bottom:8px}
+.shot-label{font-size:12px;color:var(--sub);letter-spacing:.04em}
 
 /* ── Section 6: Roadmap ── */
 .timeline{max-width:400px;margin:0 auto}
@@ -222,6 +235,10 @@ footer a:hover{color:var(--gold)}
 footer .copy{font-size:11px;color:var(--muted);margin-top:12px}
 
 /* ── Desktop ── */
+@media(max-width:640px){
+  .features-3col{grid-template-columns:1fr!important;gap:24px!important}
+  .numbers-grid{grid-template-columns:repeat(2,1fr)!important}
+}
 @media(min-width:768px){
   .section{padding:140px 40px}
   .section-inner{max-width:640px}
@@ -234,7 +251,8 @@ footer .copy{font-size:11px;color:var(--muted);margin-top:12px}
   .cocktail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
   .cocktail-panel{height:500px;margin-bottom:0}
   .noise-card{flex:0 0 280px;height:400px}
-  .shot{width:240px;height:490px}
+  .shot-card{flex:0 0 240px}
+  .shot-img{width:240px;height:490px}
   .hero-glow{width:500px;height:500px}
 }
 @media(min-width:1024px){
@@ -244,6 +262,7 @@ footer .copy{font-size:11px;color:var(--muted);margin-top:12px}
 </style>
 </head>
 <body>
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
 
 <!-- Nav -->
 <nav>
@@ -326,24 +345,24 @@ footer .copy{font-size:11px;color:var(--muted);margin-top:12px}
   </div>
   <div class="noise-scroll" style="max-width:900px;margin-left:auto;margin-right:auto;padding-left:0">
     <div class="noise-card">
-      <div class="img" style="background-image:url(https://images.unsplash.com/photo-1529156069898-489d0f7e0fe0?w=600&q=80)"></div>
+      <div class="img" style="background-image:url(images/thunderstorm.jpg)"></div>
       <div class="label"><h3>雷雨</h3><p>窗外雨声，室内温暖</p></div>
     </div>
     <div class="noise-card">
-      <div class="img" style="background-image:url(https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80)"></div>
+      <div class="img" style="background-image:url(images/ocean.jpg)"></div>
       <div class="label"><h3>海浪</h3><p>潮汐起落，心事放空</p></div>
     </div>
     <div class="noise-card">
-      <div class="img" style="background-image:url(https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?w=600&q=80)"></div>
+      <div class="img" style="background-image:url(images/campfire.jpg)"></div>
       <div class="label"><h3>篝火</h3><p>噼啪作响，宁静温暖</p></div>
     </div>
     <div class="noise-card">
-      <div class="img" style="background-image:url(https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80)"></div>
+      <div class="img" style="background-image:url(images/forest.jpg)"></div>
       <div class="label"><h3>森林鸟鸣</h3><p>清晨林间，生机盎然</p></div>
     </div>
     <div class="noise-card">
-      <div class="img" style="background-image:url(https://images.unsplash.com/photo-1518837695005-2083093bcbf2?w=600&q=80)"></div>
-      <div class="label"><h3>溪流</h3><p>流水潺潺，心随水去</p></div>
+      <div class="img" style="background-image:url(images/cat.jpg)"></div>
+      <div class="label"><h3>猫咪呼噜</h3><p>咕噜咕噜，安心入眠</p></div>
     </div>
   </div>
 </section>
@@ -352,13 +371,48 @@ footer .copy{font-size:11px;color:var(--muted);margin-top:12px}
 <section class="section">
   <div class="section-inner" style="max-width:900px;text-align:center">
     <p class="section-label">App 预览</p>
-    <h2 style="margin-bottom:16px">一切都在指尖</h2>
-    <p style="font-size:15px;color:var(--sub);font-weight:300">以下是 App 实际截图。<br class="mobile-only">截图将在下一版本中更新。</p>
-    <div class="screenshots-frame">
-      <div class="shot">首页<br><span style="font-size:11px;margin-top:4px;display:block">截图待补充</span></div>
-      <div class="shot">调酒页<br><span style="font-size:11px;margin-top:4px;display:block">截图待补充</span></div>
-      <div class="shot">白噪音<br><span style="font-size:11px;margin-top:4px;display:block">截图待补充</span></div>
-      <div class="shot">我的<br><span style="font-size:11px;margin-top:4px;display:block">截图待补充</span></div>
+    <h2 style="margin-bottom:4px">一切都在指尖</h2>
+    <p style="font-size:14px;color:var(--sub);font-weight:300;margin-bottom:32px">以下为 App 实际截图，左右滑动查看</p>
+    <div class="shot-scroll">
+      <div class="shot-card"><div class="shot-img" style="background-image:url(images/screenshot-home.jpg)"></div><span class="shot-label">首页</span></div>
+      <div class="shot-card"><div class="shot-img" style="background-image:url(images/screenshot-recipe.jpg)"></div><span class="shot-label">调酒配方</span></div>
+      <div class="shot-card"><div class="shot-img" style="background-image:url(images/screenshot-ambient.jpg)"></div><span class="shot-label">白噪音混音</span></div>
+      <div class="shot-card"><div class="shot-img" style="background-image:url(images/screenshot-detail.jpg)"></div><span class="shot-label">鸡尾酒详情</span></div>
+      <div class="shot-card"><div class="shot-img" style="background-image:url(images/screenshot-profile.jpg)"></div><span class="shot-label">我的</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 亮点数字 ── -->
+<section class="section" style="padding:60px 24px">
+  <div class="section-inner" style="max-width:900px;text-align:center">
+    <p class="section-label">为什么选择喝点</p>
+    <div class="numbers-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);max-width:600px;margin:32px auto 0">
+      <div style="background:var(--card);padding:28px 16px"><div style="font-size:32px;font-weight:700;color:var(--gold)">671</div><div style="font-size:12px;color:var(--sub);margin-top:4px">配方 · 六大基酒品类</div></div>
+      <div style="background:var(--card);padding:28px 16px"><div style="font-size:32px;font-weight:700;color:var(--gold)">12</div><div style="font-size:12px;color:var(--sub);margin-top:4px">白噪音 · 独立混音</div></div>
+      <div style="background:var(--card);padding:28px 16px"><div style="font-size:32px;font-weight:700;color:var(--gold)">20</div><div style="font-size:12px;color:var(--sub);margin-top:4px">等级 · 从路人到传奇</div></div>
+      <div style="background:var(--card);padding:28px 16px"><div style="font-size:32px;font-weight:700;color:var(--gold)">30</div><div style="font-size:12px;color:var(--sub);margin-top:4px">成就 · 等你解锁</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 卖点三则 ── -->
+<section class="section" style="padding:40px 24px 80px">
+  <div class="features-3col" style="max-width:700px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+    <div style="text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🧩</div>
+      <h3 style="font-size:15px;color:var(--text);margin-bottom:6px">智能材料匹配</h3>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">录入手头的基酒和配料，三秒匹配所有能调出的酒。反查模式，用存货找灵感。</p>
+    </div>
+    <div style="text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">📝</div>
+      <h3 style="font-size:15px;color:var(--text);margin-bottom:6px">品鉴笔记系统</h3>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">为每款酒写品鉴笔记，记录口味偏好。可打分可回看，打造你的私人酒单。</p>
+    </div>
+    <div style="text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">📡</div>
+      <h3 style="font-size:15px;color:var(--text);margin-bottom:6px">完全离线可用</h3>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6">无需网络，无需注册。所有数据本地存储，你的隐私由你做主。</p>
     </div>
   </div>
 </section>
