@@ -1,0 +1,24 @@
+{
+  "app_name": "酌野",
+  "version": "1.0.1",
+  "build_number": 2028,
+  "file": "stirlore-v1.0.1-2028-arm64.apk",
+  "bytes": 215516120,
+  "MB": 215.52,
+  "sha256": "e16c10dbb8be3da9f0079a23d122d4eb9e2bc0c24d634eec59e8482127cc0e77",
+  "certificate_sha256": "c463dd6da251ec315cc3c4da3a7707dba369f729c5f641a0eb510f4d4b3651e7",
+  "android_min_sdk": 24,
+  "android_min_version": "7.0",
+  "target_sdk": 36,
+  "architectures": [
+    "arm64-v8a"
+  ],
+  "release": true,
+  "debuggable": false,
+  "dart_obfuscated": true,
+  "r8_minified": true,
+  "offline": true,
+  "published": true,
+  "app_english_name": "Stirlore",
+  "download_url": "https://github.com/Vantos233/hedian/releases/download/v1.0.1-2028/stirlore-v1.0.1-2028-arm64.apk"
+}
